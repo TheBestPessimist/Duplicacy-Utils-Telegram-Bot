@@ -56,6 +56,7 @@ func initTelegramWebhookEndpoint() {
 func initServer() {
 	http.HandleFunc("/", handler.HandleHome())
 	http.HandleFunc("/telegramWebhook", handler.TelegramWebhookHandler())
+	http.HandleFunc("/userUpdate", handler.UserUpdateHandler())
 
 	// Serve or log
 	log.Fatal(http.ListenAndServe(":1337", Log(http.DefaultServeMux)))

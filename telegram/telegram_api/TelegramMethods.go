@@ -34,18 +34,31 @@ func HandleUpdateFromTelegram(binaryResponse []byte) {
 		"\n\n`" + strconv.FormatInt(m.Message.Chat.Id, 10) + "`\n\n" +
 		"Here's the message you just wrote: _" + m.Message.Text + "_."
 
-	SendMessage(m.Message.Chat.Id, msg)
+	sendMessage(m.Message.Chat.Id, msg)
 }
 
-func SendMessage(chat_ID int64, text string) {
+func SendMessageToUser(reqBody []byte) {
+	var m telegram_entity.IncomingUserMessage
+	e := json.Unmarshal(reqBody, &m)
+	if e != nil {
+		fmt.Println(e)
+		return
+	}
+
+	// fmt.Printf("SendMessageToUser: %s\n", reqBody)
+	fmt.Printf("SendMessageToUser: %+v\n\n", m)
+
+	sendMessage(m.ChatId, m.Content)
+}
+
+func sendMessage(chat_ID int64, text string) {
 	message := telegram_entity.NewSendUpdateMessage(chat_ID)
 	message.Text = text
 
 	messageBinary, _ := json.Marshal(message)
 
 	messageBinary = doPostRequest("sendMessage?", messageBinary)
-	// fmt.Printf("SendMessage: %s\n", messageBinary)
-
+	// fmt.Printf("sendMessage: %s\n", messageBinary)
 }
 
 func UpdateWebhookEndpoint(endpoint string) {
