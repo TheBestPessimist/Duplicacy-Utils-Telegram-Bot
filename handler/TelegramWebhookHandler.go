@@ -7,7 +7,7 @@ import (
 	"net/http"
 )
 
-func UpdateFromTelegramHandler() func(w http.ResponseWriter, r *http.Request) {
+func TelegramWebhookHandler() func(w http.ResponseWriter, r *http.Request) {
 	return func(w http.ResponseWriter, r *http.Request) {
 		body, err := ioutil.ReadAll(r.Body)
 		if err != nil {
@@ -15,7 +15,7 @@ func UpdateFromTelegramHandler() func(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 
-		// fmt.Printf("UpdateFromTelegramHandler %s\n", body)
+		// fmt.Printf("TelegramWebhookHandler %s\n", body)
 
 		telegram_api.HandleUpdateFromTelegram(body)
 	}
