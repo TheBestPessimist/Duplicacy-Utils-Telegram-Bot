@@ -1,9 +1,8 @@
 package handler
 
 import (
-	"github.com/TheBestPessimist/Duplicacy-Utils-Telegram-Bot/telegram/telegram_api"
-
 	"fmt"
+	"github.com/TheBestPessimist/Duplicacy-Utils-Telegram-Bot/telegram/telegram_api"
 	"io/ioutil"
 	"net/http"
 )
@@ -15,7 +14,7 @@ func UpdateFromTelegramHandler() func(w http.ResponseWriter, r *http.Request) {
 			fmt.Println(err)
 		}
 
-		//fmt.Printf("UpdateFromTelegramHandler %s\n", body)
+		// fmt.Printf("UpdateFromTelegramHandler %s\n", body)
 
 		telegram_api.HandleUpdateFromTelegram(body)
 	}

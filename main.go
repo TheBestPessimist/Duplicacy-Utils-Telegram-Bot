@@ -2,18 +2,17 @@ package main
 
 import (
 	"bufio"
-	"log"
-	"net/http"
-	"os"
-
 	"github.com/TheBestPessimist/Duplicacy-Utils-Telegram-Bot/config"
 	"github.com/TheBestPessimist/Duplicacy-Utils-Telegram-Bot/handler"
 	"github.com/TheBestPessimist/Duplicacy-Utils-Telegram-Bot/telegram/telegram_api"
+	"log"
+	"net/http"
+	"os"
 )
 
 func main() {
-	//initTelegramWebhookEndpoint()
 	initConfig()
+	// initTelegramWebhookEndpoint()
 	initServer()
 }
 
@@ -35,14 +34,14 @@ func initConfig() {
 }
 
 func initTelegramWebhookEndpoint() {
-	endpoint := "https://c15f0856.ngrok.io/updateClient"
+	endpoint := "https://a6cf4dc9.ngrok.io" + "/telegramWebhook"
 	telegram_api.UpdateWebhookEndpoint(endpoint)
 
 }
 
 func initServer() {
 	http.HandleFunc("/", handler.HandleHome())
-	http.HandleFunc("/updateClient", handler.UpdateFromTelegramHandler())
+	http.HandleFunc("/telegramWebhook", handler.UpdateFromTelegramHandler())
 
 	// Serve or log
 	log.Fatal(http.ListenAndServe(":1337", Log(http.DefaultServeMux)))
