@@ -23,15 +23,15 @@ func HandleUpdateFromTelegram(binaryResponse []byte) {
 	if e != nil {
 		fmt.Println(e)
 	}
-	//fmt.Printf("HandleUpdateFromTelegram: %s\n", binaryResponse)
-	//fmt.Printf("HandleUpdateFromTelegram: %+v\n\n", m)
+	fmt.Printf("HandleUpdateFromTelegram: %s\n", binaryResponse)
+	fmt.Printf("HandleUpdateFromTelegram: %+v\n\n", m)
 
 	msg := "This bot is a simple one.\n\n" +
 		"Its purpose is to message you whenever a backup has started " +
 		"or finished as long as you use @TheBestPessimist's duplicacy utils.\n\n" +
 
 		"Here's the token needed in the config:     " +
-		"`" + strconv.FormatInt(m.Message.Chat.Id, 10) + "`  .\n\n" +
+		"\n\n`" + strconv.FormatInt(m.Message.Chat.Id, 10) + "`\n\n" +
 		"Here's the message you just wrote: _" + m.Message.Text + "_."
 
 	SendMessage(m.Message.Chat.Id, msg)
@@ -44,7 +44,7 @@ func SendMessage(chat_ID int64, text string) {
 	messageBinary, _ := json.Marshal(message)
 
 	messageBinary = doPostRequest("sendMessage?", messageBinary)
-	//fmt.Printf("SendMessage: %s\n", messageBinary)
+	// fmt.Printf("SendMessage: %s\n", messageBinary)
 
 }
 
@@ -71,24 +71,24 @@ func doPostRequest(telegramMethod string, content []byte) []byte {
 	if err != nil {
 		fmt.Println(err)
 	}
-	//fmt.Printf("doPostRequest: %s\n", body)
+	// fmt.Printf("doPostRequest: %s\n", body)
 	return body
 }
 
-//func DoGetRequest(method string) []byte {
-//	resp, err := http.Get(config.TELEGRAM_ENDPOINT + method)
-//	if err != nil {
-//		fmt.Println(err)
-//	}
-//	defer func() {
-//		if resp.Body != nil {
-//			resp.Body.Close()
-//		}
-//	}()
+// func DoGetRequest(method string) []byte {
+// 	resp, err := http.Get(config.TELEGRAM_ENDPOINT + method)
+// 	if err != nil {
+// 		fmt.Println(err)
+// 	}
+// 	defer func() {
+// 		if resp.Body != nil {
+// 			resp.Body.Close()
+// 		}
+// 	}()
 //
-//	bytes, err := ioutil.ReadAll(resp.Body)
-//	if err != nil {
-//		fmt.Println(err)
-//	}
-//	return bytes
-//}
+// 	bytes, err := ioutil.ReadAll(resp.Body)
+// 	if err != nil {
+// 		fmt.Println(err)
+// 	}
+// 	return bytes
+// }
