@@ -31,6 +31,20 @@ func initConfig() {
 		config.API_TOKEN = scanner.Text()
 		config.TELEGRAM_ENDPOINT += config.API_TOKEN + "/"
 	}
+
+	// handle company proxy config
+	// if the file proxy.cfg exists then it must contain the correct proxy string
+	// eg.: http://DOMAIN%5Cusername:leProxyPass@le.proxy.server:1337
+	// note: %5C means "\" and handles "DOMAIN\username"
+	if f, err := os.Open("./config/proxy.cfg"); !os.IsNotExist(err) {
+		defer f.Close()
+
+		scanner := bufio.NewScanner(f)
+		if ok := scanner.Scan(); !ok && scanner.Err() != nil {
+			log.Panic(err)
+		}
+		_ = os.Setenv("HTTP_PROXY", scanner.Text())
+	}
 }
 
 func initTelegramWebhookEndpoint() {
