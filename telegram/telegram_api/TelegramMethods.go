@@ -28,7 +28,7 @@ func HandleUpdateFromTelegram(binaryResponse []byte) {
 
 	msg := "This bot is a simple one.\n\n" +
 		"Its purpose is to message you whenever a backup has started " +
-		"or finished as long as you use @TheBestPessimist's duplicacy utils.\n\n" +
+		"or finished as long as you use @TheBestPessimist's [duplicacy utils](https://github.com/TheBestPessimist/duplicacy-utils/).\n\n" +
 
 		"Here's the token needed in the config:     " +
 		"\n\n`" + strconv.FormatInt(m.Message.Chat.Id, 10) + "`\n\n" +
