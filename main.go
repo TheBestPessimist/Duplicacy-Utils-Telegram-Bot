@@ -1,13 +1,14 @@
 package main
 
 import (
-	"bufio"
 	"github.com/TheBestPessimist/Duplicacy-Utils-Telegram-Bot/config"
 	"github.com/TheBestPessimist/Duplicacy-Utils-Telegram-Bot/handler"
 	"github.com/TheBestPessimist/Duplicacy-Utils-Telegram-Bot/telegram/telegram_api"
+	"io/ioutil"
 	"log"
 	"net/http"
 	"os"
+	"strings"
 )
 
 func main() {
@@ -18,32 +19,22 @@ func main() {
 
 func initConfig() {
 	if config.API_TOKEN == "" {
-		f, err := os.Open("./config/token.cfg")
-		if err != nil {
+		if data, err := ioutil.ReadFile("./config/token.cfg"); err != nil {
 			log.Panic(err)
+		} else {
+			config.API_TOKEN = strings.TrimSpace(string(data))
+			config.TELEGRAM_ENDPOINT += config.API_TOKEN + "/"
 		}
-		defer f.Close()
-
-		scanner := bufio.NewScanner(f)
-		if ok := scanner.Scan(); !ok && scanner.Err() != nil {
-			log.Panic(err)
-		}
-		config.API_TOKEN = scanner.Text()
-		config.TELEGRAM_ENDPOINT += config.API_TOKEN + "/"
 	}
+
+	println(">>>" + config.API_TOKEN+"<<<")
 
 	// handle company proxy config
 	// if the file proxy.cfg exists then it must contain the correct proxy string
 	// eg.: http://DOMAIN%5Cusername:leProxyPass@le.proxy.server:1337
 	// note: %5C means "\" and handles "DOMAIN\username"
-	if f, err := os.Open("./config/proxy.cfg"); !os.IsNotExist(err) {
-		defer f.Close()
-
-		scanner := bufio.NewScanner(f)
-		if ok := scanner.Scan(); !ok && scanner.Err() != nil {
-			log.Panic(err)
-		}
-		_ = os.Setenv("HTTP_PROXY", scanner.Text())
+	if data, err := ioutil.ReadFile("./config/proxy.cfg"); err == nil {
+		_ = os.Setenv("HTTP_PROXY", strings.TrimSpace(string(data)))
 	}
 }
 
