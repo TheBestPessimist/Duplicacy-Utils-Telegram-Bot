@@ -23,8 +23,8 @@ func HandleUpdateFromTelegram(binaryResponse []byte) {
 	if e != nil {
 		fmt.Println(e)
 	}
-	fmt.Printf("HandleUpdateFromTelegram: %s\n", binaryResponse)
-	fmt.Printf("HandleUpdateFromTelegram: %+v\n\n", m)
+	// fmt.Printf("HandleUpdateFromTelegram: %s\n", binaryResponse)
+	// fmt.Printf("HandleUpdateFromTelegram: %+v\n\n", m)
 
 	msg := "This bot is a simple one.\n\n" +
 		"Its purpose is to message you whenever a backup has started " +
@@ -60,7 +60,7 @@ func sendMessage(chat_ID int64, text string, replyToMessageId int64) {
 
 	messageBinary, _ := json.Marshal(message)
 
-	messageBinary = doPostRequest("sendMessage?", messageBinary) // todo remove "?"
+	messageBinary = doPostRequest("sendMessage", messageBinary)
 	// fmt.Printf("sendMessage: %s\n", messageBinary)
 }
 
