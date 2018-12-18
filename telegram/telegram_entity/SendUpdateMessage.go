@@ -5,6 +5,7 @@ type SendUpdateMessage struct {
 	Text                  string `json:"text"`
 	ParseMode             string `json:"parse_mode"`
 	DisableWebpagePreview bool   `json:"disable_web_page_preview"`
+	ReplyToMessageId      int64  `json:"reply_to_message_id"`
 }
 
 func NewSendUpdateMessage(chatId int64) SendUpdateMessage {

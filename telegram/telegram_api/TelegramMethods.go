@@ -31,10 +31,9 @@ func HandleUpdateFromTelegram(binaryResponse []byte) {
 		"or finished as long as you use @TheBestPessimist's [duplicacy utils](https://github.com/TheBestPessimist/duplicacy-utils/).\n\n" +
 
 		"Here's the token needed in the config:     " +
-		"\n\n`" + strconv.FormatInt(m.Message.Chat.Id, 10) + "`\n\n" +
-		"Here's the message you just wrote: _" + m.Message.Text + "_."
+		"\n\n`" + strconv.FormatInt(m.Message.Chat.Id, 10) + "`"
 
-	sendMessage(m.Message.Chat.Id, msg)
+	sendMessage(m.Message.Chat.Id, msg, m.Message.MessageId)
 }
 
 func SendMessageToUser(reqBody []byte) {
@@ -48,16 +47,20 @@ func SendMessageToUser(reqBody []byte) {
 	// fmt.Printf("SendMessageToUser: %s\n", reqBody)
 	fmt.Printf("SendMessageToUser: %+v\n\n", m)
 
-	sendMessage(m.ChatId, m.Content)
+	sendMessage(m.ChatId, m.Content, 0)
 }
 
-func sendMessage(chat_ID int64, text string) {
+func sendMessage(chat_ID int64, text string, replyToMessageId int64) {
 	message := telegram_entity.NewSendUpdateMessage(chat_ID)
 	message.Text = text
 
+	if replyToMessageId != 0 {
+		message.ReplyToMessageId = replyToMessageId
+	}
+
 	messageBinary, _ := json.Marshal(message)
 
-	messageBinary = doPostRequest("sendMessage?", messageBinary)
+	messageBinary = doPostRequest("sendMessage?", messageBinary) // todo remove "?"
 	// fmt.Printf("sendMessage: %s\n", messageBinary)
 }
 
