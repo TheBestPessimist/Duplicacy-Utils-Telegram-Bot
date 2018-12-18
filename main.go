@@ -19,15 +19,18 @@ func main() {
 
 func initConfig() {
 	if config.API_TOKEN == "" {
-		if data, err := ioutil.ReadFile("./config/token.cfg"); err != nil {
-			log.Panic(err)
+		if apiToken := strings.TrimSpace(os.Getenv("TELEGRAM_API_TOKEN")); apiToken == "" {
+			log.Panic("No TELEGRAM_API_TOKEN env variable present!")
 		} else {
-			config.API_TOKEN = strings.TrimSpace(string(data))
+			config.API_TOKEN = apiToken
 			config.TELEGRAM_ENDPOINT += config.API_TOKEN + "/"
 		}
 	}
 
-	println(">>>" + config.API_TOKEN+"<<<")
+	// if the port is empty or 0 or >65k it's your fault
+	if listeningPort := strings.TrimSpace(os.Getenv("LISTENING_PORT")); listeningPort != "" {
+		config.SERVER_LISTENING_PORT = listeningPort
+	}
 
 	// handle company proxy config
 	// if the file proxy.cfg exists then it must contain the correct proxy string
@@ -39,7 +42,7 @@ func initConfig() {
 }
 
 func initTelegramWebhookEndpoint() {
-	endpoint := "https://a6cf4dc9.ngrok.io" + "/telegramWebhook"
+	endpoint := "https://3fb0c362.ngrok.io" + "/telegramWebhook"
 	telegram_api.UpdateWebhookEndpoint(endpoint)
 
 }
@@ -50,7 +53,7 @@ func initServer() {
 	http.HandleFunc("/userUpdate", handler.UserUpdateHandler())
 
 	// Serve or log
-	log.Fatal(http.ListenAndServe(":1337", Log(http.DefaultServeMux)))
+	log.Fatal(http.ListenAndServe(":"+config.SERVER_LISTENING_PORT, Log(http.DefaultServeMux)))
 }
 
 // Log some info about the requests
