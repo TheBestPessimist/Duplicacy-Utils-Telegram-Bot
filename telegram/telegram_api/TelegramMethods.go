@@ -73,6 +73,7 @@ func doPostRequest(telegramMethod string, content []byte) []byte {
 	resp, err := http.Post(config.TELEGRAM_ENDPOINT+telegramMethod, CONTENT_TYPE, bytes.NewBuffer(content))
 	if err != nil {
 		fmt.Println(err)
+		return nil
 	}
 	defer func() {
 		if resp.Body != nil {
