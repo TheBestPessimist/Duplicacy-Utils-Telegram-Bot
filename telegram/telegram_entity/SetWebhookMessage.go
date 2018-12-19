@@ -1,6 +1,6 @@
 package telegram_entity
 
+// Deprecated
 type SetWebhookMessage struct {
 	Url string `json:"url"`
-	// certificate: https://core.telegram.org/bots/api#setwebhook
 }
