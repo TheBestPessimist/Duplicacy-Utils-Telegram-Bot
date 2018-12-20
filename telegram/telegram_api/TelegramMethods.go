@@ -64,14 +64,6 @@ func sendMessage(chat_ID int64, text string, replyToMessageId int64) {
 	// fmt.Printf("sendMessage: %s\n", messageBinary)
 }
 
-func UpdateWebhookEndpoint(endpoint string) {
-	message := telegram_entity.SetWebhookMessage{Url: endpoint}
-	data, _ := json.Marshal(message)
-	data = doPostRequest("setWebhook", data)
-	fmt.Printf("UpdateWebhookEndpoint: %s\n", data)
-
-}
-
 func doPostRequest(telegramMethod string, content []byte) []byte {
 	resp, err := http.Post(config.TELEGRAM_ENDPOINT+telegramMethod, CONTENT_TYPE, bytes.NewBuffer(content))
 	if err != nil {
