@@ -87,6 +87,8 @@ func updateTelegramWebhookAddress() {
 	// Handle the response
 	if body, err := ioutil.ReadAll(resp.Body); nil == err {
 		fmt.Printf("UpdateWebhookEndpoint: %s\n", body)
+	} else {
+		log.Panic(err)
 	}
 }
 
