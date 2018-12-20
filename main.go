@@ -15,8 +15,8 @@ import (
 
 func main() {
 	initConfig()
-	// updateTelegramWebhookAddress()
-	// initServer()
+	updateTelegramWebhookAddress()
+	initServer()
 }
 
 func initConfig() {
