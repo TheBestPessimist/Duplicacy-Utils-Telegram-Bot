@@ -15,7 +15,7 @@ import (
 
 func main() {
 	initConfig()
-	initTelegramWebhookEndpoint()
+	// updateTelegramWebhookAddress()
 	// initServer()
 }
 
@@ -42,65 +42,60 @@ func initConfig() {
 		_ = os.Setenv("HTTP_PROXY", strings.TrimSpace(string(data)))
 	}
 
-	fmt.Printf("configuration is:\nAPI_TOKEN:%s\nTELEGRAM_ENDPOINT:%s\nSERVER_LISTENING_PORT:%s\n", config.API_TOKEN, config.TELEGRAM_ENDPOINT, config.SERVER_LISTENING_PORT)
+	if cert := strings.TrimSpace(os.Getenv("CERTIFICATE_PATH")); cert == "" {
+		log.Panic("No CERTIFICATE_PATH env variable present!")
+	} else {
+		config.CERTIFICATE_PATH = cert
+	}
+
+	fmt.Printf("configuration is:\n"+
+		"API_TOKEN:%s\n"+
+		"TELEGRAM_ENDPOINT:%s\n"+
+		"SERVER_LISTENING_PORT:%s\n"+
+		"CERTIFICATE_PATH:%s\n",
+		config.API_TOKEN, config.TELEGRAM_ENDPOINT, config.SERVER_LISTENING_PORT, config.CERTIFICATE_PATH)
 }
 
-func initTelegramWebhookEndpoint() {
-	// endpoint := "https://duplicacy-utils.tbp.land" + "/telegramWebhook"
-	readCertificate("./config/fullchain3.pem")
-	// telegram_api.UpdateWebhookEndpoint(endpoint)
-}
-
-func readCertificate(certPath string) {
-	// the telegram endpoint
-	endpoint := "https://duplicacy-utils.tbp.land" + "/telegramWebhook"
-
-	/* Create a buffer to hold this multi-part form */
-	var b bytes.Buffer
-	body_writer := multipart.NewWriter(&b)
-
-	// Read certificate file content
+func updateTelegramWebhookAddress() {
+	// Read certificate file
 	var certData string
-	if data, err := ioutil.ReadFile(certPath); err == nil {
+	if data, err := ioutil.ReadFile(config.CERTIFICATE_PATH); err == nil {
 		certData = string(data)
 	}
 
-	/* Create a form field */
-	_ = body_writer.WriteField("certificate", certData)
+	// Create a buffer to hold this multipart form
+	var b bytes.Buffer
+	bodyWriter := multipart.NewWriter(&b)
 
-	/* Create a second form field */
-	_ = body_writer.WriteField("url", endpoint)
+	// Add a form field storing the certificate data
+	_ = bodyWriter.WriteField("certificate", certData)
 
+	// Add a second form field storing my server's webhook address
+	_ = bodyWriter.WriteField("url", config.WEBHOOK_ADDRESS)
 
-	/* Close the body and send the request */
-	body_writer.Close()
-	content_type := body_writer.FormDataContentType()
+	// Close the body and send the request
+	_ = bodyWriter.Close()
+	contentType := bodyWriter.FormDataContentType()
 
-
-	resp, err := http.Post(config.TELEGRAM_ENDPOINT+"setWebhook", content_type, &b)
+	resp, err := http.Post(config.TELEGRAM_ENDPOINT+"setWebhook", contentType, &b)
 	if nil != err {
 		panic(err.Error())
 	}
-
-	/* Handle the response */
+	//noinspection GoUnhandledErrorResult
 	defer resp.Body.Close()
-	body, err := ioutil.ReadAll(resp.Body)
 
-	if nil != err {
-		fmt.Println("errorination happened reading the body", err)
-		return
+	// Handle the response
+	if body, err := ioutil.ReadAll(resp.Body); nil == err {
+		fmt.Printf("UpdateWebhookEndpoint: %s\n", body)
 	}
-
-	fmt.Println(string(body[:]))
 }
 
-func
-initServer() {
+func initServer() {
 	http.HandleFunc("/", handler.HandleHome())
 	http.HandleFunc("/telegramWebhook", handler.TelegramWebhookHandler())
 	http.HandleFunc("/userUpdate", handler.UserUpdateHandler())
 
-	// Serve or log
+	// Serve or die
 	log.Fatal(http.ListenAndServe(":"+config.SERVER_LISTENING_PORT, Log(http.DefaultServeMux)))
 }
 
