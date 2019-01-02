@@ -48,6 +48,16 @@ func SendMessageToUser(reqBody []byte) {
 	escapedContent = strings.Replace(escapedContent, "&", "&amp;", -1)
 	escapedContent = strings.Replace(escapedContent, "<", "&lt;", -1)
 	escapedContent = strings.Replace(escapedContent, ">", "&gt;", -1)
+
+	escapedContent = strings.Replace(escapedContent, "&lt;b&gt;", "<b>", -1)
+	escapedContent = strings.Replace(escapedContent, "&lt;/b&gt;", "</b>", -1)
+	escapedContent = strings.Replace(escapedContent, "&lt;i&gt;", "<i>", -1)
+	escapedContent = strings.Replace(escapedContent, "&lt;/i&gt;", "</i>", -1)
+	escapedContent = strings.Replace(escapedContent, "&lt;code&gt;", "<code>", -1)
+	escapedContent = strings.Replace(escapedContent, "&lt;/code&gt;", "</code>", -1)
+	escapedContent = strings.Replace(escapedContent, "&lt;pre&gt;", "<pre>", -1)
+	escapedContent = strings.Replace(escapedContent, "&lt;/pre&gt;", "</pre>", -1)
+
 	m.Content = escapedContent
 
 	// fmt.Printf("SendMessageToUser: %s\n", reqBody)
