@@ -1,15 +1,15 @@
 package telegram_api
 
 import (
-	"github.com/TheBestPessimist/Duplicacy-Utils-Telegram-Bot/config"
-	"github.com/TheBestPessimist/Duplicacy-Utils-Telegram-Bot/telegram/telegram_entity"
-
 	"bytes"
 	"encoding/json"
 	"fmt"
+	"github.com/TheBestPessimist/Duplicacy-Utils-Telegram-Bot/config"
+	"github.com/TheBestPessimist/Duplicacy-Utils-Telegram-Bot/telegram/telegram_entity"
 	"io/ioutil"
 	"net/http"
 	"strconv"
+	"strings"
 )
 
 const (
@@ -28,10 +28,10 @@ func HandleUpdateFromTelegram(binaryResponse []byte) {
 
 	msg := "This bot is a simple one.\n\n" +
 		"Its purpose is to message you whenever a backup has started " +
-		"or finished as long as you use @TheBestPessimist's [duplicacy utils](https://github.com/TheBestPessimist/duplicacy-utils/).\n\n" +
+		"or finished as long as you use @TheBestPessimist's <a href='https://github.com/TheBestPessimist/duplicacy-utils/'>duplicacy utils</a>.\n\n" +
 
 		"Here's the token needed in the config:     " +
-		"\n\n`" + strconv.FormatInt(m.Message.Chat.Id, 10) + "`"
+		"\n\n<code>" + strconv.FormatInt(m.Message.Chat.Id, 10) + "</code>"
 
 	sendMessage(m.Message.Chat.Id, msg, m.Message.MessageId)
 }
@@ -43,6 +43,12 @@ func SendMessageToUser(reqBody []byte) {
 		fmt.Println(e)
 		return
 	}
+
+	escapedContent := m.Content
+	escapedContent = strings.Replace(escapedContent, "&", "&amp;", -1)
+	escapedContent = strings.Replace(escapedContent, "<", "&lt;", -1)
+	escapedContent = strings.Replace(escapedContent, ">", "&gt;", -1)
+	m.Content = escapedContent
 
 	// fmt.Printf("SendMessageToUser: %s\n", reqBody)
 	fmt.Printf("SendMessageToUser: %+v\n\n", m)

@@ -11,7 +11,7 @@ type SendUpdateMessage struct {
 func NewSendUpdateMessage(chatId int64) SendUpdateMessage {
 	return SendUpdateMessage{
 		ChatId:                chatId,
-		ParseMode:             "Markdown",
+		ParseMode:             "HTML",
 		DisableWebpagePreview: true,
 	}
 }
