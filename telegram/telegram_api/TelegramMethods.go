@@ -30,8 +30,8 @@ func HandleUpdateFromTelegram(binaryResponse []byte) {
 		"Its purpose is to message you whenever a backup has started " +
 		"or finished as long as you use @TheBestPessimist's <a href='https://github.com/TheBestPessimist/duplicacy-utils/'>duplicacy utils</a>.\n\n" +
 
-		"Here's the token needed in the config:     " +
-		"\n\n<code>" + strconv.FormatInt(m.Message.Chat.Id, 10) + "</code>"
+		"Here's what you need to paste in the user config:     " +
+		"\n\n<code>$telegramToken = " + strconv.FormatInt(m.Message.Chat.Id, 10) + "</code>"
 
 	sendMessage(m.Message.Chat.Id, msg, m.Message.MessageId)
 }
