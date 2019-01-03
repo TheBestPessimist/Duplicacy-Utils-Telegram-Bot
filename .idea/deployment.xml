@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-  <component name="PublishConfigData" serverName="ssh.chat.tbp.land" createEmptyFolders="true">
+  <component name="PublishConfigData" serverName="ssh.chat.tbp.land" createEmptyFolders="true" uploadOnCheckin="11d815ec-fcfa-4108-9ded-e41e6a05534d">
     <serverData>
       <paths name="ssh.chat.tbp.land">
         <serverdata>
@@ -14,5 +14,6 @@
         </serverdata>
       </paths>
     </serverData>
+    <option name="myUploadOnCheckinName" value="ssh.chat.tbp.land" />
   </component>
 </project>
