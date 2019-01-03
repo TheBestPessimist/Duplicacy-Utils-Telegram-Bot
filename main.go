@@ -21,10 +21,10 @@ func main() {
 
 func initConfig() {
 	if config.API_TOKEN == "" {
-		if apiToken := strings.TrimSpace(os.Getenv("TELEGRAM_API_TOKEN")); apiToken == "" {
-			log.Panic("No TELEGRAM_API_TOKEN env variable present!")
+		if data, err := ioutil.ReadFile("./config/token.cfg"); err != nil {
+			log.Panic(err)
 		} else {
-			config.API_TOKEN = apiToken
+			config.API_TOKEN = strings.TrimSpace(string(data))
 			config.TELEGRAM_ENDPOINT += config.API_TOKEN + "/"
 		}
 	}
