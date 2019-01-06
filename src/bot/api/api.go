@@ -8,12 +8,12 @@ import (
 	"strings"
 )
 
-func SendMessageToUser(reqBody []byte) {
+func SendMessageToUser(reqBody []byte) error {
 	var m entity.BackupNotification
 	e := json.Unmarshal(reqBody, &m)
 	if e != nil {
 		fmt.Println(e)
-		return
+		return e
 	}
 
 	escapedContent := m.Content
@@ -29,11 +29,9 @@ func SendMessageToUser(reqBody []byte) {
 	escapedContent = strings.Replace(escapedContent, "&lt;/code&gt;", "</code>", -1)
 	escapedContent = strings.Replace(escapedContent, "&lt;pre&gt;", "<pre>", -1)
 	escapedContent = strings.Replace(escapedContent, "&lt;/pre&gt;", "</pre>", -1)
-
 	m.Content = escapedContent
 
-	// fmt.Printf("SendMessageToUser: %s\n", reqBody)
 	fmt.Printf("SendMessageToUser: %+v\n\n", m)
 
-	api.SendMessage(m.ChatId, m.Content, 0)
+	return api.SendMessage(m.ChatId, m.Content, 0)
 }

@@ -32,10 +32,10 @@ func HandleUpdateFromTelegram(binaryResponse []byte) {
 		"Here's what you need to paste in the user config:     " +
 		"\n\n<code>$telegramToken = " + strconv.FormatInt(m.Message.Chat.Id, 10) + "</code>"
 
-	SendMessage(m.Message.Chat.Id, msg, m.Message.MessageId)
+	_ = SendMessage(m.Message.Chat.Id, msg, m.Message.MessageId)
 }
 
-func SendMessage(chat_ID int64, text string, replyToMessageId int64) {
+func SendMessage(chat_ID int64, text string, replyToMessageId int64) error {
 	message := entity.NewTextMessage(chat_ID)
 	message.Text = text
 
@@ -43,28 +43,32 @@ func SendMessage(chat_ID int64, text string, replyToMessageId int64) {
 		message.ReplyToMessageId = replyToMessageId
 	}
 
-	messageBinary, _ := json.Marshal(message)
+	messageBinary, err := json.Marshal(message)
+	if err != nil {
+		fmt.Println(err)
+		return err
+	}
 
-	messageBinary = doPostRequest("sendMessage", messageBinary)
-	// fmt.Printf("SendMessage: %s\n", messageBinary)
+	return doPostRequest("sendMessage", messageBinary)
 }
 
-func doPostRequest(telegramMethod string, content []byte) []byte {
+func doPostRequest(telegramMethod string, content []byte) error {
 	resp, err := http.Post(config.TELEGRAM_ENDPOINT+telegramMethod, CONTENT_TYPE, bytes.NewBuffer(content))
 	if err != nil {
 		fmt.Println(err)
-		return nil
+		return err
 	}
 	defer func() {
 		if resp.Body != nil {
-			resp.Body.Close()
+			_ = resp.Body.Close()
 		}
 	}()
 
 	body, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
 		fmt.Println(err)
+		return err
 	}
-	// fmt.Printf("doPostRequest: %s\n", body)
-	return body
+	fmt.Printf("doPostRequest:\n Header: %s\n Body: %s\n", resp.Header, body)
+	return nil
 }
