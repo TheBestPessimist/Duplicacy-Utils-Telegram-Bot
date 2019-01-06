@@ -4,7 +4,7 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
-	botEntity "github.com/TheBestPessimist/Duplicacy-Utils-Telegram-Bot/src/botapi/entity"
+	botEntity "github.com/TheBestPessimist/Duplicacy-Utils-Telegram-Bot/src/bot/entity"
 	"github.com/TheBestPessimist/Duplicacy-Utils-Telegram-Bot/src/config"
 	"github.com/TheBestPessimist/Duplicacy-Utils-Telegram-Bot/src/telegram/entity"
 	"io/ioutil"
@@ -34,7 +34,7 @@ func HandleUpdateFromTelegram(binaryResponse []byte) {
 		"Here's what you need to paste in the user config:     " +
 		"\n\n<code>$telegramToken = " + strconv.FormatInt(m.Message.Chat.Id, 10) + "</code>"
 
-	sendMessage(m.Message.Chat.Id, msg, m.Message.MessageId)
+	SendMessage(m.Message.Chat.Id, msg, m.Message.MessageId)
 }
 
 func SendMessageToUser(reqBody []byte) {
@@ -64,10 +64,10 @@ func SendMessageToUser(reqBody []byte) {
 	// fmt.Printf("SendMessageToUser: %s\n", reqBody)
 	fmt.Printf("SendMessageToUser: %+v\n\n", m)
 
-	sendMessage(m.ChatId, m.Content, 0)
+	SendMessage(m.ChatId, m.Content, 0)
 }
 
-func sendMessage(chat_ID int64, text string, replyToMessageId int64) {
+func SendMessage(chat_ID int64, text string, replyToMessageId int64) {
 	message := entity.NewTextMessage(chat_ID)
 	message.Text = text
 
@@ -78,7 +78,7 @@ func sendMessage(chat_ID int64, text string, replyToMessageId int64) {
 	messageBinary, _ := json.Marshal(message)
 
 	messageBinary = doPostRequest("sendMessage", messageBinary)
-	// fmt.Printf("sendMessage: %s\n", messageBinary)
+	// fmt.Printf("SendMessage: %s\n", messageBinary)
 }
 
 func doPostRequest(telegramMethod string, content []byte) []byte {
