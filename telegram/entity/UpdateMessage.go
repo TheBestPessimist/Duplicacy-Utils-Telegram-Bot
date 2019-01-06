@@ -1,4 +1,4 @@
-package telegram_entity
+package entity
 
 // UpdateMessage is received whenever a user types anything to the bot in telegram.
 //

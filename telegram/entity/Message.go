@@ -1,4 +1,4 @@
-package telegram_entity
+package entity
 
 // Message stores details about a message (eg. TextMessage) from a telegram chat.
 // It stores the MessageId, Chat, and the Text sent.

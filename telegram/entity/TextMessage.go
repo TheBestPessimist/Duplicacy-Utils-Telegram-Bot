@@ -1,4 +1,4 @@
-package telegram_entity
+package entity
 
 // TextMessage stores data needed for sending a text message
 // from the bot to a telegram user.
