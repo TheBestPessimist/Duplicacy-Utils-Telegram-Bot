@@ -3,8 +3,8 @@ package main
 import (
 	"bytes"
 	"fmt"
-	"github.com/TheBestPessimist/Duplicacy-Utils-Telegram-Bot/config"
-	"github.com/TheBestPessimist/Duplicacy-Utils-Telegram-Bot/handler"
+	"github.com/TheBestPessimist/Duplicacy-Utils-Telegram-Bot/src/config"
+	"github.com/TheBestPessimist/Duplicacy-Utils-Telegram-Bot/src/handler"
 	"io/ioutil"
 	"log"
 	"mime/multipart"
