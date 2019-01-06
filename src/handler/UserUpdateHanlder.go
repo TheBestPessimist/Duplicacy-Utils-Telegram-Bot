@@ -7,7 +7,7 @@ import (
 	"net/http"
 )
 
-func UserUpdateHandler() func(w http.ResponseWriter, r *http.Request) {
+func BackupNotificationHandler() func(w http.ResponseWriter, r *http.Request) {
 	return func(w http.ResponseWriter, r *http.Request) {
 		body, err := ioutil.ReadAll(r.Body)
 		if err != nil {

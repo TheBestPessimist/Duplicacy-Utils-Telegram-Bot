@@ -95,7 +95,7 @@ func updateTelegramWebhookAddress() {
 func initServer() {
 	http.HandleFunc("/", handler.HandleHome())
 	http.HandleFunc("/telegramUpdateWebhook", handler.TelegramWebhookHandler())
-	http.HandleFunc("/userUpdate", handler.UserUpdateHandler())
+	http.HandleFunc("/userUpdate", handler.BackupNotificationHandler())
 
 	// Serve or die
 	log.Fatal(http.ListenAndServe(":"+config.SERVER_LISTENING_PORT, Log(http.DefaultServeMux)))
