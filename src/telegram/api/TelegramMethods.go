@@ -68,21 +68,3 @@ func doPostRequest(telegramMethod string, content []byte) []byte {
 	// fmt.Printf("doPostRequest: %s\n", body)
 	return body
 }
-
-// func DoGetRequest(method string) []byte {
-// 	resp, err := http.Get(config.TELEGRAM_ENDPOINT + method)
-// 	if err != nil {
-// 		fmt.Println(err)
-// 	}
-// 	defer func() {
-// 		if resp.Body != nil {
-// 			resp.Body.Close()
-// 		}
-// 	}()
-//
-// 	bytes, err := ioutil.ReadAll(resp.Body)
-// 	if err != nil {
-// 		fmt.Println(err)
-// 	}
-// 	return bytes
-// }
