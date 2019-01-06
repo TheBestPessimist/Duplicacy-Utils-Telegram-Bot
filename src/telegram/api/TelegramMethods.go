@@ -1,4 +1,4 @@
-package telegram_api
+package api
 
 import (
 	"bytes"
