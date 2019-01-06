@@ -2,7 +2,7 @@ package handler
 
 import (
 	"fmt"
-	"github.com/TheBestPessimist/Duplicacy-Utils-Telegram-Bot/src/telegram/api"
+	"github.com/TheBestPessimist/Duplicacy-Utils-Telegram-Bot/src/bot/api"
 	"io/ioutil"
 	"net/http"
 )
