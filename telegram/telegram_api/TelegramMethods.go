@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
+	botEntity "github.com/TheBestPessimist/Duplicacy-Utils-Telegram-Bot/botapi/entity"
 	"github.com/TheBestPessimist/Duplicacy-Utils-Telegram-Bot/config"
 	"github.com/TheBestPessimist/Duplicacy-Utils-Telegram-Bot/telegram/telegram_entity"
 	"io/ioutil"
@@ -16,9 +17,9 @@ const (
 	CONTENT_TYPE = "application/json"
 )
 
-// HandleUpdateFromTelegram is called each time a user writes to the bot in Telegram.
+// HandleUpdateFromTelegram is called each time a user writes to the bot in telegram.
 func HandleUpdateFromTelegram(binaryResponse []byte) {
-	var m telegram_entity.IncomingUpdateMessage
+	var m telegram_entity.UpdateMessage
 	e := json.Unmarshal(binaryResponse, &m)
 	if e != nil {
 		fmt.Println(e)
@@ -37,7 +38,7 @@ func HandleUpdateFromTelegram(binaryResponse []byte) {
 }
 
 func SendMessageToUser(reqBody []byte) {
-	var m telegram_entity.IncomingUserMessage
+	var m botEntity.BackupNotification
 	e := json.Unmarshal(reqBody, &m)
 	if e != nil {
 		fmt.Println(e)
@@ -67,7 +68,7 @@ func SendMessageToUser(reqBody []byte) {
 }
 
 func sendMessage(chat_ID int64, text string, replyToMessageId int64) {
-	message := telegram_entity.NewSendUpdateMessage(chat_ID)
+	message := telegram_entity.NewTextMessage(chat_ID)
 	message.Text = text
 
 	if replyToMessageId != 0 {
