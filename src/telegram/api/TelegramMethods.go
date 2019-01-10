@@ -3,6 +3,7 @@ package api
 import (
 	"bytes"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"github.com/TheBestPessimist/Duplicacy-Utils-Telegram-Bot/src/config"
 	"github.com/TheBestPessimist/Duplicacy-Utils-Telegram-Bot/src/telegram/entity"
@@ -70,5 +71,19 @@ func doPostRequest(telegramMethod string, content []byte) error {
 		return err
 	}
 	fmt.Printf("doPostRequest:\n Header: %s\n Body: %s\n", resp.Header, body)
+
+	// if the body is a MessageError, then something bad must've happened
+	var messageError entity.MessageError
+	err = json.Unmarshal(body, &messageError)
+	if err != nil {
+		fmt.Println(err)
+		return err
+	}
+	if !messageError.Ok {
+		errMsg := fmt.Sprintf("%+v", messageError)
+		fmt.Println(errMsg)
+		return errors.New(errMsg)
+	}
+
 	return nil
 }
