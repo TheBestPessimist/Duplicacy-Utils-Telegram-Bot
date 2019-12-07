@@ -27,7 +27,11 @@ $payload = @{
 
 Invoke-WebRequest `
   -Body (ConvertTo-Json -Compress -InputObject $payload) `
+  -ContentType 'application/json' `
   -Method Post `
   -Uri "https://duplicacy-utils.tbp.land/userUpdate"
 ```
 
+# More usage details
+
+More details and screenshots are found on the [Duplicacy Forum](https://forum.duplicacy.com/t/send-backup-notifications-via-telegram-using-duplicacy-utils-telegram-bot/1692)
